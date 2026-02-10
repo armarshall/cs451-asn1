@@ -23,13 +23,61 @@ class CircularQueue{
 };
 
 CircularQueue::CircularQueue(int N){
-	this->First = 0;
-	this->Last = N - 1;
+	this->First = -1;
+	this->Last = -1;
 	this->MaxCapacity = N;
+	this->Items = new double[MaxCapacity];
+}
 
-	for(int i = 0; i < MaxCapacity; i++){
-		*Items = NULL;
+CircularQueue::~CircularQueue(){
+	delete[] this->Items;
+}
+
+void CircularQueue::enqueue(double newitem){
+	if(this->isFull()){
+	  return;
 	}
+
+	if(this->First == -1 && this->Last == -1) {
+		this->Items[0] = newitem;
+		this->First=0;
+		this->Last=0;
+	}	
+
+	if(this->Last == MaxCapacity - 1){
+		this->Items[0] = newitem;
+		this->Last = 0;
+	} else {
+		this->Items[Last + 1] = newitem;
+		this->Last = Last + 1;
+	}
+}
+
+double CircularQueue::dequeue() {
+	if(this->isEmpty() || this->first == -1 || this->last == -1){
+		return;
+	}
+
+	/*if(this->Last == -1) {
+		return;
+	} else {*/
+
+		
+
+}
+
+bool CircularQueue::isFull(){
+	if((this->First == 0 && this->Last == MaxCapacity - 1) || (this->First - this->Last == 1)){
+		return true;
+	} else return false;
+}
+
+bool CircularQueue::isEmpty(){
+	return this->First == -1 || this->Last == -1;
+}
+
+int CircularQueue::size(){
+	
 }
 
 int main(){
