@@ -34,52 +34,113 @@ CircularQueue::~CircularQueue(){
 }
 
 void CircularQueue::enqueue(double newitem){
+	// You can't enqueue to a full list
 	if(this->isFull()){
-	  return;
+	  	return;
 	}
 
-	if(this->First == -1 && this->Last == -1) {
-		this->Items[0] = newitem;
+	// Set First and Last to 0 if it's the first item
+	if(this->isEmpty()){
 		this->First=0;
 		this->Last=0;
+		this->Items[0] = newitem;
+
+		return;
 	}	
 
-	if(this->Last == MaxCapacity - 1){
-		this->Items[0] = newitem;
-		this->Last = 0;
-	} else {
-		this->Items[Last + 1] = newitem;
-		this->Last = Last + 1;
-	}
+	// Add the new item to the queue, and adjust Last
+	int newindex = (this->Last + 1) % MaxCapacity;
+	this->Items[newindex] = newitem;
+	this->Last = newindex;
 }
 
 double CircularQueue::dequeue() {
-	if(this->isEmpty() || this->first == -1 || this->last == -1){
-		return;
+	int size = this->size();
+	
+	// You can't dequeue from an empty list
+	if(size == 0){
+		return -1;
 	}
 
-	/*if(this->Last == -1) {
-		return;
-	} else {*/
+	// Save the old item
+	double olditem = Items[this->First];
 
-		
+        if(size == 1){ // If size was originally 1, it's now 0. We have to adjust First and Last back to -1
+                this->First = -1;
+                this->Last = -1;	
+	} else this->First = (this->First + 1) % MaxCapacity; // Move first up one spot
+
+	return olditem;	
 
 }
 
 bool CircularQueue::isFull(){
-	if((this->First == 0 && this->Last == MaxCapacity - 1) || (this->First - this->Last == 1)){
-		return true;
-	} else return false;
-}
+	return this->size() == MaxCapacity;
+}	
 
 bool CircularQueue::isEmpty(){
-	return this->First == -1 || this->Last == -1;
+	return this->size() == 0;
 }
 
 int CircularQueue::size(){
+	// If the list is empty
+	if(this->First == -1 || this->Last == -1){
+		return 0;
+	}
 	
+	int temp = this->First;
+	int count = 1;
+
+	// Go around the queue until first reaches last
+	while(temp != this->Last){
+		count++;
+		temp = (temp + 1) % MaxCapacity;
+	}
+
+	return count;
 }
 
 int main(){
+	CircularQueue* c = new CircularQueue(6);
+	c->enqueue(3);
+	c->enqueue(2);
+	c->enqueue(9);
+        c->enqueue(5);
+	c->enqueue(6);
+        c->enqueue(7);	
+
+	printf("%d\n", c->size());
+
+	printf("%f\n", c->dequeue());
+	printf("%d\n", c->size());
+
+	printf("%f\n", c->dequeue());
+        printf("%d\n", c->size());
+
+	printf("%f\n", c->dequeue());
+        printf("%d\n", c->size());
+
+	c->enqueue(12);
+        c->enqueue(15);
+        c->enqueue(17);
+
+	printf("%f\n", c->dequeue());
+        printf("%d\n", c->size());
+
+        printf("%f\n", c->dequeue());
+        printf("%d\n", c->size());
+
+        printf("%f\n", c->dequeue());
+        printf("%d\n", c->size());
+
+	printf("%f\n", c->dequeue());
+        printf("%d\n", c->size());
+
+        printf("%f\n", c->dequeue());
+        printf("%d\n", c->size());
+
+        printf("%f\n", c->dequeue());
+        printf("%d\n", c->size());
+
 	return 0;
 }
