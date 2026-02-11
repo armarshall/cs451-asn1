@@ -20,6 +20,8 @@ class CircularQueue{
  		bool isEmpty(); // Verifies if the queue is empty
  		bool isFull(); // Verifies if the queue is full
  		int size(); /* Returns how many items are in the queue (attention: this is not the same as the MaxCapacity) */
+
+		friend ostream& operator<<(ostream&, CircularQueue*);
 };
 
 CircularQueue::CircularQueue(int N){
@@ -100,9 +102,34 @@ int CircularQueue::size(){
 	return count;
 }
 
+//======== Output Overloading
+ostream& operator<<(ostream& o, CircularQueue* c){
+        int size = c->size();	
+	
+	if(size == 0){ // If the list is empty
+                o << "";
+	} else {
+        	int temp = c->First;
+		o<<c->Items[temp];
+
+        	// Go around the queue until first reaches last
+        	while(temp != c->Last){
+                	temp = (temp + 1) % c->MaxCapacity;
+			o << "<--"<<c->Items[temp];
+		}
+	
+		o << "\n";
+        }
+	   
+    return o;
+}
+
 int main(){
 	CircularQueue* c = new CircularQueue(6);
 	c->enqueue(3);
+
+	cout << c;
+
 	c->enqueue(2);
 	c->enqueue(9);
         c->enqueue(5);
@@ -120,11 +147,16 @@ int main(){
 	printf("%f\n", c->dequeue());
         printf("%d\n", c->size());
 
+	cout << c;
+
 	c->enqueue(12);
         c->enqueue(15);
         c->enqueue(17);
 
-	printf("%f\n", c->dequeue());
+	cout << c;
+
+
+	/*printf("%f\n", c->dequeue());
         printf("%d\n", c->size());
 
         printf("%f\n", c->dequeue());
@@ -140,7 +172,7 @@ int main(){
         printf("%d\n", c->size());
 
         printf("%f\n", c->dequeue());
-        printf("%d\n", c->size());
+        printf("%d\n", c->size());*/
 
 	return 0;
 }
