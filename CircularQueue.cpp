@@ -104,9 +104,7 @@ int CircularQueue::size(){
 
 //======== Output Overloading
 ostream& operator<<(ostream& o, CircularQueue* c){
-        int size = c->size();	
-	
-	if(size == 0){ // If the list is empty
+	if(c->isEmpty()){
                 o << "";
 	} else {
         	int temp = c->First;
