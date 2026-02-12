@@ -1,5 +1,5 @@
 // @Author: Aidan Marshall
-// @Author: Partner’s Name (if done in pair)
+// @Author: Michele Onton	
 
 #include <iostream> //imports cout/cin
 
@@ -101,6 +101,74 @@ int CircularQueue::size(){
 
 	return count;
 }
+
+double CircularQueue::operator[](int newindex) {
+
+        int newsize = this->size();
+
+        if(newindex < 0 || newindex >= newsize) {
+                
+            return -1;  
+            
+        }
+
+        int position = (this->First + newindex) % this->MaxCapacity;
+
+        return this->Items[position];
+}
+
+CircularQueue CircularQueue::operator+(CircularQueue& newqueue) {
+
+    int newsize;
+
+    if(this->size() < newqueue.size()) {
+
+        newsize = this->size();
+
+    } else {
+
+        newsize = newqueue.size();
+
+    }
+
+    CircularQueue q(newsize);
+
+    for(int i = 0; i < newsize; i++) {
+
+        q.enqueue((*this)[i] + newqueue[i]);
+
+    }
+
+    return q;
+}
+
+bool CircularQueue::operator==(CircularQueue& newqueue) {
+
+    if (this->size() != newqueue.size()) {
+        
+        return false;
+    
+    }
+
+    for (int i = 0; i < this->size(); i++) {
+
+        if ((*this)[i] != newqueue[i]) {
+
+            return false;
+
+        } 
+    }
+
+    return true;
+}
+
+bool CircularQueue::operator!=(CircularQueue& newqueue) {
+
+    return !(*this == newqueue);
+     
+}
+
+
 
 //======== Output Overloading
 ostream& operator<<(ostream& o, CircularQueue* c){
