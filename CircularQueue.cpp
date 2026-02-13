@@ -75,9 +75,9 @@ double CircularQueue::dequeue() {
 	// Save the old item
 	double olditem = Items[this->First];
 
-        if(size == 1){ // If size was originally 1, it's now 0. We have to adjust First and Last back to -1
-                this->First = -1;
-                this->Last = -1;	
+    if(size == 1){ // If size was originally 1, it's now 0. We have to adjust First and Last back to -1
+    	this->First = -1;
+        this->Last = -1;	
 	} else this->First = (this->First + 1) % MaxCapacity; // Move first up one spot
 
 	return olditem;	
@@ -190,21 +190,21 @@ CircularQueue& CircularQueue::operator>>(double& olditem){
 //======== Output Overloading
 ostream& operator<<(ostream& o, CircularQueue& c){
 	if(c.isEmpty()){
-                o << "";
+    	o << "";
 	} else {
-        	int temp = c.First;
+        int temp = c.First;
 		o<<c.Items[temp];
-
-        	// Go around the queue until first reaches last
-        	while(temp != c.Last){
-                	temp = (temp + 1) % c.MaxCapacity;
+		
+        // Go around the queue until first reaches last
+        while(temp != c.Last){
+        	temp = (temp + 1) % c.MaxCapacity;
 			o << "<--"<<c.Items[temp];
 		}
 	
 		o << "\n";
-        }
+    }
 	   
-    	return o;
+    return o;
 }
 
 int main(){
