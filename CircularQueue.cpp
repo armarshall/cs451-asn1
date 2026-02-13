@@ -29,7 +29,7 @@ class CircularQueue{
 		CircularQueue& operator<<(double newitem);
 		CircularQueue& operator>>(double& olditem);
 
-		friend ostream& operator<<(ostream&, CircularQueue);
+		friend ostream& operator<<(ostream&, CircularQueue&);
 };
 
 CircularQueue::CircularQueue(int N){
@@ -125,7 +125,7 @@ double CircularQueue::operator[](int newindex) {
         return this->Items[position];
 }
 
-CircularQueue CircularQueue::operator+(CircularQueue newqueue) {
+CircularQueue CircularQueue::operator+(CircularQueue& newqueue) {
 
     int newsize;
 
@@ -150,7 +150,7 @@ CircularQueue CircularQueue::operator+(CircularQueue newqueue) {
     return q;
 }
 
-bool CircularQueue::operator==(CircularQueue newqueue) {
+bool CircularQueue::operator==(CircularQueue& newqueue) {
 
     if (this->size() != newqueue.size()) {
         
@@ -170,7 +170,7 @@ bool CircularQueue::operator==(CircularQueue newqueue) {
     return true;
 }
 
-bool CircularQueue::operator!=(CircularQueue newqueue) {
+bool CircularQueue::operator!=(CircularQueue& newqueue) {
 
     return !(*this == newqueue);
      
@@ -188,7 +188,7 @@ CircularQueue& CircularQueue::operator>>(double& olditem){
 
 
 //======== Output Overloading
-ostream& operator<<(ostream& o, CircularQueue c){
+ostream& operator<<(ostream& o, CircularQueue& c){
 	if(c.isEmpty()){
                 o << "";
 	} else {
@@ -204,25 +204,10 @@ ostream& operator<<(ostream& o, CircularQueue c){
 		o << "\n";
         }
 	   
-    return o;
+    	return o;
 }
 
 int main(){
-	CircularQueue c1(3), c2(3);
-
-	c1.enqueue(3);
-        c1.enqueue(5);
-	c1.enqueue(6);
-
-	c2.enqueue(9);
-        c2.enqueue(7);
-	c2.enqueue(1);	
-
-	// You get a double free error message for any of the lines below
-	// cout << c1;
-	// c1 == c2
-	// c1 != c2
-	// c1 + c2
-
+    
 	return 0;
 }
