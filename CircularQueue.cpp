@@ -22,9 +22,9 @@ class CircularQueue{
  		int size(); /* Returns how many items are in the queue (attention: this is not the same as the MaxCapacity) */
 
 		double operator[](int newindex);
-		CircularQueue operator+(CircularQueue newqueue);
-		bool operator==(CircularQueue newqueue);
-		bool operator!=(CircularQueue newqueue);
+		CircularQueue operator+(CircularQueue& newqueue);
+		bool operator==(CircularQueue& newqueue);
+		bool operator!=(CircularQueue& newqueue);
 
 		CircularQueue& operator<<(double newitem);
 		CircularQueue& operator>>(double& olditem);
