@@ -21,7 +21,15 @@ class CircularQueue{
  		bool isFull(); // Verifies if the queue is full
  		int size(); /* Returns how many items are in the queue (attention: this is not the same as the MaxCapacity) */
 
-		friend ostream& operator<<(ostream&, CircularQueue*);
+		double operator[](int newindex);
+		CircularQueue operator+(CircularQueue newqueue);
+		bool operator==(CircularQueue newqueue);
+		bool operator!=(CircularQueue newqueue);
+
+		CircularQueue& operator<<(double newitem);
+		CircularQueue& operator>>(double& olditem);
+
+		friend ostream& operator<<(ostream&, CircularQueue);
 };
 
 CircularQueue::CircularQueue(int N){
@@ -117,7 +125,7 @@ double CircularQueue::operator[](int newindex) {
         return this->Items[position];
 }
 
-CircularQueue CircularQueue::operator+(CircularQueue& newqueue) {
+CircularQueue CircularQueue::operator+(CircularQueue newqueue) {
 
     int newsize;
 
@@ -142,7 +150,7 @@ CircularQueue CircularQueue::operator+(CircularQueue& newqueue) {
     return q;
 }
 
-bool CircularQueue::operator==(CircularQueue& newqueue) {
+bool CircularQueue::operator==(CircularQueue newqueue) {
 
     if (this->size() != newqueue.size()) {
         
@@ -162,26 +170,35 @@ bool CircularQueue::operator==(CircularQueue& newqueue) {
     return true;
 }
 
-bool CircularQueue::operator!=(CircularQueue& newqueue) {
+bool CircularQueue::operator!=(CircularQueue newqueue) {
 
     return !(*this == newqueue);
      
 }
 
+CircularQueue& CircularQueue::operator<<(double newitem){
+	this->enqueue(newitem);
+	return *this;
+}
+
+CircularQueue& CircularQueue::operator>>(double& olditem){
+	olditem = this->dequeue();
+	return *this;
+}
 
 
 //======== Output Overloading
-ostream& operator<<(ostream& o, CircularQueue* c){
-	if(c->isEmpty()){
+ostream& operator<<(ostream& o, CircularQueue c){
+	if(c.isEmpty()){
                 o << "";
 	} else {
-        	int temp = c->First;
-		o<<c->Items[temp];
+        	int temp = c.First;
+		o<<c.Items[temp];
 
         	// Go around the queue until first reaches last
-        	while(temp != c->Last){
-                	temp = (temp + 1) % c->MaxCapacity;
-			o << "<--"<<c->Items[temp];
+        	while(temp != c.Last){
+                	temp = (temp + 1) % c.MaxCapacity;
+			o << "<--"<<c.Items[temp];
 		}
 	
 		o << "\n";
@@ -191,54 +208,21 @@ ostream& operator<<(ostream& o, CircularQueue* c){
 }
 
 int main(){
-	CircularQueue* c = new CircularQueue(6);
-	c->enqueue(3);
+	CircularQueue c1(3), c2(3);
 
-	cout << c;
+	c1.enqueue(3);
+        c1.enqueue(5);
+	c1.enqueue(6);
 
-	c->enqueue(2);
-	c->enqueue(9);
-        c->enqueue(5);
-	c->enqueue(6);
-        c->enqueue(7);	
+	c2.enqueue(9);
+        c2.enqueue(7);
+	c2.enqueue(1);	
 
-	printf("%d\n", c->size());
-
-	printf("%f\n", c->dequeue());
-	printf("%d\n", c->size());
-
-	printf("%f\n", c->dequeue());
-        printf("%d\n", c->size());
-
-	printf("%f\n", c->dequeue());
-        printf("%d\n", c->size());
-
-	cout << c;
-
-	c->enqueue(12);
-        c->enqueue(15);
-        c->enqueue(17);
-
-	cout << c;
-
-
-	/*printf("%f\n", c->dequeue());
-        printf("%d\n", c->size());
-
-        printf("%f\n", c->dequeue());
-        printf("%d\n", c->size());
-
-        printf("%f\n", c->dequeue());
-        printf("%d\n", c->size());
-
-	printf("%f\n", c->dequeue());
-        printf("%d\n", c->size());
-
-        printf("%f\n", c->dequeue());
-        printf("%d\n", c->size());
-
-        printf("%f\n", c->dequeue());
-        printf("%d\n", c->size());*/
+	// You get a double free error message for any of the lines below
+	// cout << c1;
+	// c1 == c2
+	// c1 != c2
+	// c1 + c2
 
 	return 0;
 }
